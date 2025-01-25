@@ -1,0 +1,232 @@
+---
+title: Oracle 本地部署 RMAN 备份脚本定时备份数据库
+description: 详细介绍如何使用 Oracle RMAN 进行数据库备份，包括归档模式设置、备份脚本编写和定时任务配置
+date: 2024-01-24
+category: oracle
+tags: oracle, rman, backup, database, linux
+cover: /covers/cover3.jpeg
+---
+
+# Oracle 本地部署 RMAN 备份脚本定时备份数据库
+
+想必大家都听过一句话：备份是数据安全的最后一道防线。数据库是整个系统以及公司最重要的数据存放仓库，如果数据损坏丢失，将直接影响到公司业务以及财产的损失，Oracle RMAN 是官方推出最流行的在线热备方式，安全高效，部署简单。
+
+![DALL·E 2024-01-12 17.24.43 - A futuristic, technology-themed image emphasizing database data backup. The central focus is on a large, glowing digital sphere representing an Oracle](https://alist.v2ex.com.cn/d/139pan/images/DALL%C2%B7E%202024-01-12%2017.24.43%20-%20A%20futuristic%2C%20technology-themed%20image%20emphasizing%20database%20data%20backup.%20The%20central%20focus%20is%20on%20a%20large%2C%20glowing%20digital%20sphere%20representing%20an%20Oracle.png)
+
+# 一、Oracle RMAN
+
+在讲解如何使用 RMAN 进行备份之前，先了解下什么是 RMAN 备份吧！Recovery Manager (RMAN) 是一个 Oracle 数据库客户端，可以对数据库执行备份和恢复任务，并自动管理数据库备份策略，极大地简化了备份、还原和恢复数据库文件。
+
+> 关于 Oracle RMAN 的入门使用，可以参考官方文档：**[RMAN 入门](https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html#GUID-871FF5B2-C82B-462E-8182-FA28CF7B3E3B)** 写的很详细，我这里就不再赘述。
+
+![img](http://qiniu.v2ex.com.cn/upload2023/1badde92fefa4ea99ebe4bff0aee669e.png)
+
+本文主要讲解如何在主机上部署 Oracle RMAN 备份脚本。
+
+# 二、部署备份脚本
+
+Oracle RMAN 在生产环境使用一般都是热备的方式，冷备需要关掉数据库才可以进行，生产环境一般是没有停机时间给你做备份的，所以冷备不太适合生产备份。热备的方式需要打开归档模式！
+
+## 1、打开数据库归档模式
+
+如果数据库已打开归档模式，执行 `archive log list` 可以看到以下结果：
+
+![归档模式查看](http://qiniu.v2ex.com.cn/upload2023/e5d99ddd38fb4215a9f423cfa7bca5cd.png)
+
+如果未打开归档模式，一般结果显示如下：
+
+![未归档](http://qiniu.v2ex.com.cn/upload2023/c68009e13ee24e528ef200f105aa0399.png)
+
+打开数据库归档模式需要重启数据库，完整步骤如下：
+
+```
+-- 设置归档日志路径
+alter system set log_archive_dest_1='LOCATION=/archivelog';
+-- 关闭数据库，重启至mount模式
+shutdown immediate
+startup mount
+-- 开启归档模式
+alter database archivelog;
+-- 打开数据库
+alter database open;
+-- 检查归档模式是否打开
+archive log list
+```
+
+![重启数据库查看](http://qiniu.v2ex.com.cn/upload2023/e9a0e1710ff34e1ba73cf826004e5450.png)
+
+如上图，数据库打开归档模式之后，接下来就可以开始部署 RMAN 脚本进行在线备份了。
+
+由于打开归档模式后会源源不断的产生归档日志，所以建议部署一个定期删除归档的任务：
+
+```
+## oracle 用户下执行
+SCRIPTSDIR=/home/oracle/scripts
+mkdir -p ${SCRIPTSDIR}
+{
+  echo '#!/bin/bash'
+  echo 'source ~/.bash_profile'
+  echo 'deltime=`date +"20%y%m%d%H%M%S"`'
+  echo "rman target / nocatalog msglog ${SCRIPTSDIR}/del_arch_\${deltime}.log<<EOF"
+  echo 'crosscheck archivelog all;'
+  echo "delete noprompt archivelog until time 'sysdate-7';"
+  echo "delete noprompt force archivelog until time 'SYSDATE-10';"
+  echo 'EOF'
+} >>${SCRIPTSDIR}/del_arch.sh
+
+chmod +x ${SCRIPTSDIR}/del_arch.sh
+
+## root 用户下执行
+SCRIPTSDIR=/home/oracle/scripts
+{
+  echo "#00 02 * * * ${SCRIPTSDIR}/del_arch.sh"
+} >>/var/spool/cron/oracle
+```
+
+## 2、本地备份脚本
+
+Oracle RMAN 备份脚本的写法多种多样，根据不同的数据库环境可能有不同的写法。比如空间不够使用压缩备份，又比如数据库太大选择增量备份等等情况，我也不能全部照顾到大家的情况，所以这里就分享一个我比较常用的备份脚本，仅供参考！该脚本为增量备份脚本，分为 0 级和 1 级，周日 0 级全备，周一至周六 1 级备份。
+
+首先需要在本地磁盘创建一个备份目录，需要有足够的磁盘空间：
+
+```
+## root 用户下执行
+mkdir /backup
+chown -R oracle:oinstall /backup
+chmod -R 775 /backup
+```
+
+> **📢 注意：** 以下脚本直接复制粘贴即可使用，只需注意修改对应的备份路径即可！
+
+**周日为 0 级备份脚本：**
+
+```
+#!/bin/bash
+source ~/.bash_profile
+backtime=`date +"20%y%m%d%H%M%S"`
+rman target / log=/backup/level0_backup_${backtime}.log<<EOF
+run {
+allocate channel c1 device type disk;
+allocate channel c2 device type disk;
+crosscheck backup;
+crosscheck archivelog all;
+sql"alter system archive log current";
+delete noprompt expired backup;
+delete noprompt obsolete device type disk;
+backup incremental level 0 database include current controlfile format '/backup/backlv0_%d_%T_%t_%s_%p';
+backup archivelog all DELETE INPUT format '/backup/arch_%d_%T_%t_%s_%p';
+release channel c1;
+release channel c2;
+}
+EOF
+```
+
+**周一至周六为 1 级备份脚本内容：**
+
+```
+#!/bin/bash
+source ~/.bash_profile
+backtime=`date +"20%y%m%d%H%M%S"`
+rman target / log=/backup/level1_backup_${backtime}.log<<EOF
+run {
+allocate channel c1 device type disk;
+allocate channel c2 device type disk;
+crosscheck backup;
+crosscheck archivelog all;
+sql"alter system archive log current";
+delete noprompt expired backup;
+delete noprompt obsolete device type disk;
+backup incremental level 1 database include current controlfile format '/backup/backlv1_%d_%T_%t_%s_%p';
+backup archivelog all DELETE INPUT format '/backup/arch_%d_%T_%t_%s_%p';
+release channel c1;
+release channel c2;
+}
+EOF
+```
+
+> **📢 注意：** 如果有多个实例，每个实例对应的脚本需要手动指定实例 `export ORACLE_SID`。
+
+脚本创建完之后，记得给脚本赋予可执行权限：
+
+```
+cd /home/oracle/scripts
+chmod +x dbbackup_lv0.sh
+chmod +x dbbackup_lv1.sh
+ls -lrth
+```
+
+![image-20240112170234925](http://qiniu.v2ex.com.cn/upload2023/image-20240112170234925.png)
+
+## 3、定时任务
+
+Oracle RMAN 本地备份脚本一般是与定时任务（crontab）配合使用，选择合适的时间段进行备份很重要，建议尽量挑选业务空闲或者负载较低的时间段进行备份。假设凌晨是业务空闲时段，部署定时任务：
+
+```
+## 在 root 用户下执行
+su - root
+echo "00 00 * * 0 /home/oracle/scripts/dbbackup_lv0.sh" >> /var/spool/cron/oracle
+echo "00 00 * * 1,2,3,4,5,6 /home/oracle/scripts/dbbackup_lv1.sh" >> /var/spool/cron/oracle
+```
+
+![crontab](http://qiniu.v2ex.com.cn/upload2023/image-20240112170334386.png)
+
+> **关于 crontab 命令可以参考：[Linux crontab 命令](https://www.runoob.com/linux/linux-comm-crontab.html)**
+
+这里设置好定时任务执行脚本，基本脚本部署就完成了。
+
+# 三、备份脚本验证
+
+一般备份脚本部署完之后，如果条件允许的情况下，我们都需要进行一次备份测试，来保证脚本的可执行性以及正确性，下面就简单的来做一次备份测试，验证一下咱们的备份脚本是否可以正常运行？
+
+## 1、备份数据库
+
+首先需要执行 0 级备份脚本进行数据库的备份，最好放在后台执行：
+
+```
+sh /home/oracle/scripts/dbbackup_lv0.sh &
+```
+
+![测试备份功能](http://qiniu.v2ex.com.cn/upload2023/image-20240112170712515.png)
+
+也可以连接到 RMAN 查看备份详细情况：
+
+```
+rman target /
+list backup;
+```
+
+![backup](http://qiniu.v2ex.com.cn/upload2023/image-20240112171012072.png)
+
+也可以连接到数据库查询视图：
+
+```
+set line222
+set pagesize1000
+col status for a10
+col input_type for a20
+col INPUT_BYTES_DISPLAY for a10
+col OUTPUT_BYTES_DISPLAY for a10 
+col TIME_TAKEN_DISPLAY for a10
+select input_type,
+       status,
+       to_char(start_time,
+               'yyyy-mm-dd hh24:mi:ss'),
+       to_char(end_time,
+               'yyyy-mm-dd hh24:mi:ss'),
+       input_bytes_display,
+       output_bytes_display,
+       time_taken_display,
+       COMPRESSION_RATIO
+  from v$rman_backup_job_details
+ order by 3 desc;
+```
+
+![image-20240112171459881](http://qiniu.v2ex.com.cn/upload2023/image-20240112171459881.png)
+
+从上图也可以看出数据库备份的情况，分别有2次备份，一次是 18 号进行了全备，一次是 19 号进行了增量备份，备份状态，备份大小以及备份起始时间都可以看到。
+
+接着再执行一次 1 级增量备份：
+
+```
+sh /home/oracle/scripts/dbbackup_lv1.sh &
+``` 

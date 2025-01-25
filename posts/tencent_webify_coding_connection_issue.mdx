@@ -1,0 +1,30 @@
+---
+title: 腾讯 Webify 连接 Coding 的奇怪问题
+description: 记录在使用腾讯云 Webify 连接 Coding 仓库时遇到的 webhook 问题，以及与其他平台的对比分析
+date: 2024-04-08
+category: tools
+tags: webify, coding, github, gitee, webhook, deployment, tools
+cover: /covers/cover1.jpeg
+---
+
+## 问题描述
+
+腾讯的 Webify 连接自家的 Coding 有很奇怪的问题，service hook 没有办法正常发送。
+
+![Coding 上无法看到webhook信息](https://alist.v2ex.com.cn/d/139pan/images/202312011702004.png)
+
+## 其他平台对比
+
+### GitHub
+同样的如果将仓库换成 GitHub 的 webhooks 就很正常：
+
+![GitHub的仓库截图](http://qiniu.v2ex.com.cn/upload2022/202312011704135.png)
+
+### Gitee
+如果再换成 Gitee 的话就会时不时出现 Read time out 的问题：
+
+![请求错误信息](http://qiniu.v2ex.com.cn/upload2022/202312011705422.png)
+
+## 最终解决方案
+
+最后为了稳定使用，我就直接用 GitHub 了。目前使用下来暂时没有什么问题，推送后 Hexo 的自动构建也都很正常。就这个事情也提过工单，后面不了了之，腾讯云送了 50 元的代金券 😀。 

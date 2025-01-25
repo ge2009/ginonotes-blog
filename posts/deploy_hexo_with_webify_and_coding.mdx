@@ -1,0 +1,45 @@
+---
+title: 用 Webify 和 Coding 部署 Hexo 博客
+description: 分享使用腾讯云 Webify 和 Coding 平台部署 Hexo 博客的经验，以及如何实现双重部署方案
+date: 2024-04-01
+category: tools
+tags: hexo, webify, coding, blog, deployment, tools
+cover: /covers/cover6.jpeg
+---
+
+## 之前比较少写博客的原因
+
+主要还是由于没有一个稳定的平台，经常是自己买了VPS后，没一段时间就不维护，导致就是没有书写的欲望。
+
+很奇怪的事情是有一个循环：经常都是买了3年的腾讯云，然后头一年折腾一下相关的blog技术，等都配置好了以后，就没有书写的欲望了。
+
+## 为什么这次又重新开始写了
+
+主要原因还是在折腾 Vercel + GitHub + Hexo 的时候发现，如果按这种方案来搭建博客，后面基本上不用担心说博客无法持续运维的问题，这样就还可以分享一些想法，所以就重新开始写了。
+
+今天配置的时候也是又一些心得。采用了双重的预案：
+
+- github -> vercel   
+- Gitee -> webify 
+
+其中 Webify 的原理示意图如下：
+
+![Webify 流程图](http://qiniu.v2ex.com.cn/upload2022/202311301023498.png)
+
+## 现在的写作流程
+
+现在写博客的基本流程是：
+
+1. `hexo n "博客名称"` - 创建新文章
+2. 用 Typora 打开书写
+3. `hexo d -g` - 生成并部署
+
+这样就基本发布到：
+- Webify：[http://www.v2ex.com.cn]
+- Vercel：[https://blog.v2ex.com.cn]
+
+整体的体验还是很不错的。
+
+## 分享内容
+
+接下来会分享一些技术类型的博客，作为本人的积累和沉淀。 

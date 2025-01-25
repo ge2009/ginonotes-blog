@@ -1,0 +1,129 @@
+---
+title: Oracle 数据库从 19.25 升级到 19.26 的详细指南
+description: 详细记录 Oracle 数据库从 19.25 升级到 19.26 版本的完整过程，包括准备工作、升级步骤和验证方法
+date: 2025-01-24
+category: oracle
+tags: oracle, database, upgrade, maintenance, dba
+cover: /covers/cover2.jpeg
+---
+
+# Oracle 19.25 单机版升级到 19.26 详细指南
+
+## 升级前准备
+
+注意：升级到 19.25 需要升级 OPatch 到 12.2.0.1.42
+
+### 补丁包信息
+
+```bash
+p37260974_190000_Linux-x86-64.zip  # Database Update 文件（如果有 GI 则为第二大包）
+p37102264_190000_Linux-x86-64.zip  # OJVM Update（通常最小）
+p6880880_190000_Linux-x86-64.zip   # OPatch 最新版本
+```
+
+## 环境检查
+
+### 查看 OPatch 版本
+
+```bash
+[oracle@spectra-single:/home/oracle]$ opatch version
+OPatch Version: 12.2.0.1.44
+```
+
+![OPatch 版本](https://alist.v2ex.com.cn/d/139pan/images/image-20240805100853525.png)
+
+### 查看当前补丁情况
+
+```bash
+[oracle@spectra-single:/soft]$ opatch lspatches
+36912597;Database Release Update : 19.25.0.0.241015 (36912597)
+36878697;OJVM RELEASE UPDATE: 19.25.0.0.241015 (36878697)
+29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)
+```
+
+## 更新 OPatch
+
+```bash
+# 查看 opatch 位置
+which opatch
+/u01/app/oracle/product/19.3.0/db/OPatch/opatch
+
+# 更新 opatch（文件需先复制到 /soft 目录）
+su - oracle -c "unzip -q -o /soft/p6880880_190000_Linux-x86-64.zip"
+```
+
+## 安装 Oracle Release Update 19.26
+
+```bash
+cd /soft
+# 授权
+chown oracle p*.zip
+
+# 验证数据库补丁
+unzip p37260974_190000_Linux-x86-64.zip && cd 37260974
+opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+
+# 停止服务
+lsnrctl stop
+sqlplus / as sysdba
+shutdown immediate
+
+# 执行更新
+opatch apply
+```
+
+## 安装 OJVM Update 补丁
+
+```bash
+cd /soft
+
+# 验证 OJVM 补丁
+unzip p37102264_190000_Linux-x86-64.zip && cd 37102264
+opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+
+# 执行更新
+opatch apply
+
+# 验证结果
+opatch lspatches
+```
+
+升级后结果示例：
+```bash
+[oracle@spectra-single:/soft/37102264]$ opatch lspatches
+37102264;OJVM RELEASE UPDATE: 19.26.0.0.250121 (37102264)
+37260974;Database Release Update : 19.26.0.0.250121 (37260974)
+29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)
+```
+
+## 升级后恢复数据库
+
+```bash
+# 启动数据库
+sqlplus / as sysdba
+startup
+quit
+
+# 验证数据字典
+cd $ORACLE_HOME/OPatch
+./datapatch -verbose
+
+# 编译无效对象
+cd $ORACLE_HOME/rdbms/admin
+sqlplus / as sysdba
+@utlrp.sql
+quit
+
+# 启动监听
+lsnrctl start
+```
+
+## 升级验证截图
+
+![升级过程 1](https://alist.v2ex.com.cn/images/2025/01/4a36ae001ea9ce1c6eea834dfe4038c5.png)
+
+![升级过程 2](https://alist.v2ex.com.cn/images/2025/01/ad4317ae6874345e454540e855821e29.png)
+
+![升级过程 3](https://alist.v2ex.com.cn/images/2025/01/6f060d772dc3375b212e9bb74f8ce3f8.png)
+
+![升级完成](https://alist.v2ex.com.cn/images/2025/01/792fa1070277b74b42b7a0e835bbb210.png) 

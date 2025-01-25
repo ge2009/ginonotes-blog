@@ -4,8 +4,8 @@ import RSS from 'rss'
 
 export async function GET() {
   const feed = new RSS({
-    title: 'Gino Notes',
-    description: 'Gino Zhang\'s personal blog. I write about product, development and life.',
+    title: '87年的脚本',
+    description: '生活就是一个健康的人，一个美满的家庭，一份自己喜欢的工作，一样钟爱的消遣。',
     site_url: WEBSITE_HOST_URL,
     feed_url: `${WEBSITE_HOST_URL}/feed.xml`,
     language: 'zh-CN',

@@ -1,0 +1,227 @@
+---
+title: Nginx双主集群搭建
+description: 详细介绍如何搭建基于 Nginx 和 Keepalived 的双主集群系统，包含完整的安装配置步骤
+date: 2024-01-11
+category: tools
+tags: nginx, keepalived, cluster, linux, high-availability, tools
+cover: /covers/cover5.jpeg
+---
+
+![img](https://alist.v2ex.com.cn/d/139pan/images/668f2a5c887d4.png)
+
+## 安装编译Nginx 1.22版本
+
+```sh
+# 安装依赖和工具
+yum install -y vim wget gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl openssl-devel net-tools psmisc
+
+# 关闭SELinux
+sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
+
+#下载nginx
+wget https://nginx.org/download/nginx-1.22.0.tar.gz
+#解压文件
+tar -zxvf nginx-1.22.0.tar.gz && cd nginx-1.22.0
+
+#编译
+
+./configure --prefix=/usr/local/nginx --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --conf-path=/usr/local/nginx/conf/nginx.conf --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --with-pcre-jit --with-http_ssl_module --with-http_v2_module --with-http_sub_module --with-stream --with-stream_ssl_module --with-http_gzip_static_module --with-http_stub_status_module --with-pcre --with-file-aio --with-http_realip_module --with-http_stub_status_module 
+
+make 
+#安装
+make install
+
+#验证版本：
+
+/usr/local/nginx/sbin/nginx -V
+
+# 创建快捷方式：
+
+ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+
+创建nginx.service文件，并编辑
+vim /lib/systemd/system/nginx.service
+
+#内容如下：
+
+[Unit]
+Description=nginx service
+After=network.target
+[Service]
+Type=forking
+ExecStart=/usr/bin/nginx
+ExecReload=/usr/bin/nginx -s reload
+ExecStop=/usr/bin/nginx -s stop
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target
+
+
+# 开放nginx的80端口
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
+
+# 安装keepalived
+wget https://keepalived.org/software/keepalived-2.2.8.tar.gz --no-check-certificate
+
+tar -zxvf keepalived-2.2.8.tar.gz && cd keepalived-2.2.8
+./configure --prefix=/usr/local/keepalived --disable-fwmark 
+#选项--disable-fwmark 可用于禁用iptables规则,可防止VIP无法访问,无此选项默认会启用iptables规则
+make -j 2 && make install
+
+# 安装查看是否版本正确
+/usr/local/keepalived/sbin/keepalived -v
+
+ln -s /usr/local/keepalived/sbin/keepalived  /usr/bin/keepalived
+
+
+# 修改nginx相关首页标识
+vim /usr/local/nginx/html/index.html
+```
+
+## 节点一:172.16.2.191 keepalived 配置
+```ssh
+vim /usr/local/keepalived/etc/keepalived/keepalived.conf
+
+global_defs
+{
+    notification_email
+    {
+       75013085@qq.com
+    }
+    notification_email_from 75013085@qq.com
+    smtp_server 127.0.0.1
+    stmp_connect_timeout 30
+    router_id LVS_DEVEL
+}
+
+vrrp_script Monitor_Nginx {
+    script "/usr/local/keepalived/scripts/monitor_nginx.sh"
+    interval 2
+    weight -50
+}
+
+# 虚拟IP1, 本机作为Master
+vrrp_instance VI_1 {
+    state MASTER
+    interface ens192
+    virtual_router_id 51
+    mcast_src_ip 172.16.2.191
+    priority 120
+    advert_int 1
+    track_interface {
+        ens192
+    }
+
+    authentication {
+        auth_type PASS
+        auth_pass 202311
+    }
+    virtual_ipaddress {
+        172.16.2.193
+    }i
+    track_script {
+        Monitor_Nginx
+    }
+
+}
+
+# 虚拟IP2, 本机作为Backup
+vrrp_instance VI_2 {
+    state BACKUP
+    interface ens192
+    virtual_router_id 52
+    mcast_src_ip 172.16.2.191
+    priority 100
+    advert_int 1
+    track_interface {
+        ens192
+    }
+
+    authentication {
+        auth_type PASS
+        auth_pass 202311
+    }
+    virtual_ipaddress {
+        172.16.2.194
+    }
+    track_script {
+        Monitor_Nginx
+    }
+
+}
+```
+
+## 节点二:172.16.2.191keepalived 配置
+
+```ssh
+vim /usr/local/keepalived/etc/keepalived/keepalived.conf
+global_defs
+{
+    notification_email
+    {
+       75013085@qq.com
+    }
+    notification_email_from 75013085@qq.com
+    smtp_server 127.0.0.1
+    stmp_connect_timeout 30
+    router_id LVS_DEVEL
+}
+
+vrrp_script Monitor_Nginx {
+    script "/usr/local/keepalived/scripts/monitor_nginx.sh"
+    interval 2
+    weight 2
+}
+
+# 虚拟IP1, 本机作为BACKUP
+vrrp_instance VI_1 {
+    state BACKUP
+    interface ens192
+    virtual_router_id 51
+    mcast_src_ip 172.16.2.192
+    priority 100
+    advert_int 1
+    track_interface {
+        ens192
+    }
+
+    authentication {
+        auth_type PASS
+        auth_pass 202311
+    }
+    virtual_ipaddress {
+        172.16.2.193
+    }
+    track_script {
+        Monitor_Nginx
+    }
+}
+
+# 虚拟IP2, 本机作为Master
+vrrp_instance VI_2 {
+    state MASTER
+    interface ens192
+    virtual_router_id 52
+    mcast_src_ip 172.16.2.192
+    priority 120
+    advert_int 1
+    track_interface {
+        ens192
+    }
+
+    authentication {
+        auth_type PASS
+        auth_pass 202311
+    }
+    virtual_ipaddress {
+        172.16.2.194
+    }
+    track_script {
+        Monitor_Nginx
+    }
+
+}
+```
+
+## 允许vrrp 

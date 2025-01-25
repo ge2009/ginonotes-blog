@@ -1,15 +1,14 @@
 import { WEBSITE_HOST_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
-import { FaBasketballBall, FaBook, FaRobot, FaJava, FaGithub, FaTwitter, FaWeixin } from 'react-icons/fa'
-import { SiSpring, SiNextdotjs, SiMongodb } from 'react-icons/si'
-import { GiPokerHand } from 'react-icons/gi'
+import { FaLaptop,FaFilm,FaHospital, FaBook, FaRobot, FaDatabase, FaGithub, FaTwitter, FaWeixin } from 'react-icons/fa'
+import { SiNextdotjs, SiMongodb } from 'react-icons/si'
 import { HiMail } from 'react-icons/hi'
 import { BsRobot, BsGear } from 'react-icons/bs'
 import { Container } from '@/components/common/Container'
 
 const meta = {
-    title: '关于我 - Just be funny',
-    description: '开发工程师，AI 爱好者，篮球迷，终身学习者。每周发送 AI 精选文章，欢迎订阅！',
+    title: '87年的脚本',
+    description: '生活就是一个健康的人，一个美满的家庭，一份自己喜欢的工作，一样钟爱的消遣。',
     url: `${WEBSITE_HOST_URL}/about`,
 }
 
@@ -34,9 +33,8 @@ export const metadata: Metadata = {
 }
 
 const skills = [
-    { icon: FaJava, name: 'Java', color: 'text-red-500' },
-    { icon: SiSpring, name: 'Spring', color: 'text-green-500' },
-    { icon: SiMongodb, name: 'MongoDB', color: 'text-green-600' },
+    { icon: FaDatabase, name: 'Oracle', color: 'text-red-500' },
+    { icon: FaHospital, name: 'PACS', color: 'text-green-500' },
     { icon: SiNextdotjs, name: 'Next.js', color: 'text-gray-800 dark:text-gray-200' },
     { icon: BsRobot, name: 'RAG', color: 'text-purple-500' },
     { icon: BsGear, name: 'Workflow', color: 'text-blue-500' },
@@ -45,14 +43,14 @@ const skills = [
 
 const interests = [
     {
-        icon: FaBasketballBall,
-        title: '篮球',
-        description: '热爱篮球运动，享受团队协作的乐趣'
+        icon: FaFilm,
+        title: '电影',
+        description: '热爱电影，享受视觉盛宴'
     },
     {
-        icon: GiPokerHand,
-        title: '德州扑克',
-        description: '享受策略思考和决策的乐趣'
+        icon: FaLaptop,
+        title: '数码',
+        description: '享受数码产品带来的乐趣'
     },
     {
         icon: FaBook,
@@ -70,28 +68,28 @@ const contacts = [
     {
         icon: FaWeixin,
         name: '微信',
-        value: 'xingxing174556571',
+        value: 'jason0407',
         color: 'text-green-500',
     },
     {
         icon: FaGithub,
         name: 'GitHub',
         value: 'ginobefun',
-        link: 'https://github.com/ginobefun',
+        link: 'https://github.com/ge2009',
         color: 'text-gray-800 dark:text-gray-200',
     },
     {
         icon: FaTwitter,
         name: 'Twitter',
-        value: '@hongming731',
-        link: 'https://twitter.com/hongming731',
+        value: '@jason0407',
+        link: 'https://twitter.com/jason0407',
         color: 'text-blue-400',
     },
     {
         icon: HiMail,
         name: '邮件',
-        value: 'hi@gino.bot',
-        link: 'mailto:hi@gino.bot',
+        value: 'jason@v2ex.com.cn',
+        link: 'mailto:jason@v2ex.com.cn',
         color: 'text-red-500',
     },
 ]
@@ -103,14 +101,13 @@ export default function About() {
                 {/* 头部介绍 */}
                 <div>
                     <h1 className="bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
-                        Just be funny~
+                        87年的脚本
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
-                        👋 你好！我是一名开发工程师，负责架构设计和核心功能开发。在空闲时间，我会研究人工智能和 Web3 项目，同时运营着
-                        <a href="https://bestblogs.dev" target="_blank" rel="noopener noreferrer" className="px-1 text-blue-500 hover:text-blue-600">
-                            bestblogs.dev
+                    生活就是一个健康的人，一个美满的家庭，一份自己喜欢的工作，一样钟爱的消遣。
+                        <a href="https://www.v2ex.com.cn" target="_blank" rel="noopener noreferrer" className="px-1 text-blue-500 hover:text-blue-600">
+                            www.v2ex.com.cn
                         </a>
-                        ，每周发送 AI 精选文章，目前已有超过 2000 位订阅者。我相信技术不仅仅是工具，更是创造价值和改变世界的力量。
                     </p>
                 </div>
 
@@ -155,7 +152,7 @@ export default function About() {
                 <div className="mt-16">
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">关于博客</h2>
                     <p className="mt-4 text-gray-600 dark:text-gray-400">
-                        这里是我的数字花园，记录日常学习和思考的内容。你可以找到关于编程技术、人工智能、产品设计的文章，
+                        这里是我的数字花园，记录日常学习和思考的内容。你可以找到关于编程技术、人工智能、分享数码产品、oracle 数据库技术分享的文章，
                         也可以看到我的阅读笔记和生活随想。希望这些内容能够帮助到你，也欢迎与我交流讨论。
                     </p>
                 </div>
@@ -187,25 +184,6 @@ export default function About() {
                     </div>
                 </div>
 
-                {/* 订阅提示 */}
-                <div className="mt-16">
-                    <div className="rounded-2xl bg-blue-50 p-6 dark:bg-blue-900/20">
-                        <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                            📬 免费订阅我的 AI 周刊
-                        </h3>
-                        <p className="mt-2 text-blue-800 dark:text-blue-200">
-                            每周精选高质量的 AI 文章，帮助你跟上人工智能的最新发展。已有超过 2000 位读者订阅，欢迎加入我们！
-                        </p>
-                        <a
-                            href="https://www.bestblogs.dev/#subscribe"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
-                        >
-                            立即订阅
-                        </a>
-                    </div>
-                </div>
             </div>
         </Container>
     )

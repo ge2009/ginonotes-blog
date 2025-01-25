@@ -1,0 +1,29 @@
+---
+title: Uptime Kuma 超高颜值的服务在线监控工具
+description: 介绍 Uptime Kuma 服务监控工具的特性和安装使用方法，包括 Docker 部署和监控配置
+date: 2024-01-14
+category: tools
+tags: monitoring, docker, tools, devops, server
+cover: /covers/cover1.jpeg
+---
+
+> uptime kuma 超高颜值的服务在线监控工具，这个工具还真的是不错，可以把常用的一些端口加入的监控的范围，还有一堆的监控异常后推送的方式
+
+支持众多特性：
+
+- 监控 HTTP(s)/TCP/Ping/DNS/Push/Steam 游戏服务器的在线时间
+- 支持多种通知服务，包括 Telegram、Discord、Slack、Pushover、Email、企业微信、钉钉、webhook 等70多种通知服务
+- 支持多国语言
+- 简单的状态页面
+- 监控图表信息
+- 证书信息
+
+## docker 一键安装
+
+```sh
+docker run -d --restart=always -p 3001:3001 -v uptime-kuma:/app/data --name uptime-kuma louislam/uptime-kuma:1 
+```
+
+## 安装完成后的效果如图显示
+
+![UpTime Kuma截图](https://alist.v2ex.com.cn/d/139pan/images/202312011645987.png) 

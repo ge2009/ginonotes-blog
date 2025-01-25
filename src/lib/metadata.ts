@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { WEBSITE_HOST_URL } from './constants'
 
 const meta = {
-  title: 'Gino Notes',
+  title: '87年的脚本',
   description: "Gino Zhang's personal blog. I write about product, development and life.",
   image: `${WEBSITE_HOST_URL}/logo.jpg`,
   author: 'Gino Zhang',

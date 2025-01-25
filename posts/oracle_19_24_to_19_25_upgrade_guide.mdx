@@ -1,0 +1,156 @@
+---
+title: Oracle 19.24 单机版升级到19.25
+description: 详细介绍 Oracle 数据库从 19.24 版本升级到 19.25 版本的完整步骤，包括补丁准备、安装和验证过程
+date: 2024-09-26
+category: oracle
+tags: oracle, upgrade, database, patch, maintenance
+cover: /covers/cover1.jpeg
+---
+
+## 升级前准备
+
+注意要升级到19.25需要升级OPatch 到12.2.0.1.42
+
+- **补丁包信息:**
+
+```other
+p36912597_190000_Linux-x86-64.zip  --Database Update 文件第二大如果有GI的包
+p36878697_190000_Linux-x86-64.zip  --OJVM Update 一般是最小的 
+p6880880_190000_Linux-x86-64.zip   --OPatch 最新
+```
+
+## 查看opatch 版本
+
+```other
+[oracle@spectra-single:/home/oracle]$ opatch version
+OPatch Version: 12.2.0.1.42
+
+OPatch succeeded.
+```
+
+![image](https://alist.v2ex.com.cn/d/139pan/images/image-20240805100853525.png)
+
+## 查看当前补丁的-情况
+
+```other
+[oracle@spectra-single:/home/oracle]$ opatch version
+OPatch Version: 12.2.0.1.44
+
+OPatch succeeded.
+[oracle@spectra-single:/home/oracle]$ opatch lpatches
+36414915;OJVM RELEASE UPDATE: 19.24.0.0.240716 (36414915)
+36582781;Database Release Update : 19.24.0.0.240716 (36582781)
+29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)
+
+OPatch succeeded.
+```
+
+## 查看opatch 位置并更新opatch 如果需要的话
+
+```other
+# 查看opatch 位置
+which opatch
+/u01/app/oracle/product/19.3.0/db/OPatch/opatch
+# 更新opatch,文件复制到/soft下可以替换到db目录
+su - oracle -c "unzip -q -o /soft/p6880880_190000_Linux-x86-64.zip [oracle@spectra-single:/home/oracle]$ opatch version
+OPatch Version: 12.2.0.1.44
+
+OPatch succeeded.[oracle@spectra-single:/home/oracle]$ opatch version
+OPatch Version: 12.2.0.1.44
+
+OPatch succeeded"
+```
+
+## 安装Oracle Release update 19.25补丁
+
+```other
+cd /soft
+# root授权权限
+chown oracle p*.zip
+
+# 验证数据库补丁是否正常
+unzip p36912597_190000_Linux-x86-64.zip && cd 36912597
+opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+
+#停止监听与数据库 
+lsnrctl stop
+
+# 关闭数据库，用sys登陆数据库
+shutdown immediate
+
+
+# 执行数据库更新
+opatch apply 
+```
+
+## 安装OVJM update补丁
+
+```other
+cd /soft
+
+# 验证ovjm补丁
+unzip p36878697_190000_Linux-x86-64.zip && cd 36878697
+opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+
+# 执行数据库更新
+opatch apply 
+
+# 查看结果
+opatch lspatches
+
+[oracle@spectra-single:/home/oracle/36912597]$ opatch lspatches
+36912597;Database Release Update : 19.25.0.0.241015 (36912597)
+36878697;OJVM RELEASE UPDATE: 19.25.0.0.241015 (36878697)
+29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)
+
+OPatch succeeded.
+```
+
+## 升级后恢复数据库
+
+```other
+#启动数据库
+sqlplus / as sysdba
+startup
+quit
+
+#验证数据字典
+cd $ORACLE_HOME/OPatch
+./datapatch -verbose
+
+#编译无效对象
+cd $ORACLE_HOME/rdbms/admin
+sqlplus / as sysdba
+@utlrp.sql
+quit
+#========================#
+#    结束，启动监听       #
+#========================#
+lsnrctl start 
+```
+
+![image](https://alist.v2ex.com.cn/d/139pan/images/image-20240805113535276.png)
+
+![image](https://alist.v2ex.com.cn/d/139pan/images/image-20240805113707583.png)
+
+![image](https://alist.v2ex.com.cn/d/139pan/images/image-20240805113757889.png)
+
+## 升级前准备
+
+注意要升级到19.25需要升级OPatch 到12.2.0.1.42
+
+- **补丁包信息:**
+
+```other
+p36912597_190000_Linux-x86-64.zip  --Database Update 文件第二大如果有GI的包
+p36878697_190000_Linux-x86-64.zip  --OJVM Update 一般是最小的 
+p6880880_190000_Linux-x86-64.zip   --OPatch 最新
+
+
+# Opatch补丁
+wget https://alist.v2ex.com.cn/d/baidupan/oracle/oracle%2019.25%20%E8%A1%A5%E4%B8%81/p6880880_190000_Linux-x86-64.zip?sign=u7_T5FVU02D4tVU9t5rdWqn33pCBo2OmSXz9RYVIsKY=:0
+# 下载19.25 DB RU补丁
+https://alist.v2ex.com.cn/d/baidupan/oracle/oracle%2019.25%20%E8%A1%A5%E4%B8%81/p36912597_190000_Linux-x86-64.zip?sign=pOap4PRNAa-DoIDfjIi2GLaL7AxGvcyU8IS9Kn6qh8o=:0
+## 下载OVJM 19.25补丁
+wget https://alist.v2ex.com.cn/d/baidupan/oracle/oracle%2019.25%20%E8%A1%A5%E4%B8%81/p36878697_190000_Linux-x86-64.zip?sign=1mENO4FF3sx0eIwSTY_PV77DfhzxvN4nNy1FkSs2ioM=:0
+``` 
