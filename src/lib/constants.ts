@@ -1,5 +1,5 @@
 export const WEBSITE_HOST_URL =
-  process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://ginonotes.com'
+  process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://www.v2ex.com.cn'
 
 export const WEBSITE_NAME = '87年的脚本'
 export const WEBSITE_DESCRIPTION =
