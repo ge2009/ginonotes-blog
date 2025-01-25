@@ -5,6 +5,9 @@ export const CATEGORY_MAP = {
   build: '构建之路',
   reading: '阅读记录',
   thoughts: '随想思考',
+  oracle: 'Oracle',
+  tools: '工具',
+  mac: 'Mac',
 } as const
 
 // 默认的封面图片
@@ -14,6 +17,9 @@ export const DEFAULT_COVERS = {
   build: '/images/covers/build.jpg',
   reading: '/images/covers/reading.jpg',
   thoughts: '/images/covers/thoughts.jpg',
+  oracle: '/images/covers/oracle.jpg',
+  tools: '/images/covers/tools.jpg',
+  mac: '/images/covers/mac.jpg',
 } as const
 
 // 根据分类获取封面图片
