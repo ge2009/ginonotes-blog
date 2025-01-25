@@ -10,7 +10,7 @@ export async function GET() {
     feed_url: `${WEBSITE_HOST_URL}/feed.xml`,
     language: 'zh-CN',
     pubDate: new Date(),
-    copyright: `All rights reserved ${new Date().getFullYear()}, Gino Zhang`,
+    copyright: `All rights reserved ${new Date().getFullYear()}, JasonAir`,
   })
 
   allPosts
@@ -22,7 +22,7 @@ export async function GET() {
         url: `${WEBSITE_HOST_URL}${post.url}`,
         date: new Date(post.date),
         categories: [post.category],
-        author: 'Gino Zhang',
+        author: 'JasonAir',
       })
     })
 

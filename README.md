@@ -1,6 +1,6 @@
-# GinoNotes Blog
+# JasonAir Blog
 
-这是我的个人博客网站 [ginonotes.com](https://ginonotes.com)，基于现代 Web 技术栈构建，专注于提供清新、整洁的阅读体验。
+这是我的个人博客网站 [v2ex.com.cn](https://www.v2ex.com.cn)，基于现代 Web 技术栈构建，专注于提供清新、整洁的阅读体验。
 
 > 本项目基于 [ChangoMan/nextjs-mdx-blog](https://github.com/ChangoMan/nextjs-mdx-blog) 开发，感谢该项目提供的优秀起点。在此基础上，我们进行了大量定制化开发，包括界面重设计、功能增强和性能优化等。
 

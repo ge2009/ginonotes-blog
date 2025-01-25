@@ -74,7 +74,7 @@ const contacts = [
     {
         icon: FaGithub,
         name: 'GitHub',
-        value: 'ginobefun',
+        value: 'ge2009',
         link: 'https://github.com/ge2009',
         color: 'text-gray-800 dark:text-gray-200',
     },
