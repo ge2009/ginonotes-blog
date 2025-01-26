@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation'
 import { allPosts } from 'contentlayer/generated'
-import { getMDXComponent } from 'next-contentlayer/hooks'
-import { TableOfContents } from '@/components/post/TableOfContents'
-import { ReadingProgress } from '@/components/post/ReadingProgress'
+import { Metadata } from 'next'
+import { WEBSITE_HOST_URL } from '@/lib/constants'
+import { MDXContent } from '@/components/mdx/MDXContent'
 import { Container } from '@/components/common/Container'
-import { calculateReadingTime } from '@/lib/utils'
 import { PostHeader } from '@/components/post/PostHeader'
-import { PostContent } from '@/components/post/PostContent'
 import { PostFooter } from '@/components/post/PostFooter'
+import { calculateReadingTime } from '@/lib/utils'
 
 interface PostProps {
     params: {
@@ -15,111 +14,84 @@ interface PostProps {
     }
 }
 
-// 获取上一篇和下一篇文章（同分类）
-const getAdjacentPosts = (currentPost: any) => {
+async function getPostFromParams(params: PostProps['params']) {
+    const slug = params?.slug?.join('/')
+    const post = allPosts.find((post) => post.url === `/posts/${slug}`)
+
+    if (!post) {
+        null
+    }
+
+    return post
+}
+
+export async function generateMetadata({
+    params,
+}: PostProps): Promise<Metadata | undefined> {
+    const post = await getPostFromParams(params)
+
+    if (!post) {
+        return
+    }
+
+    return {
+        title: post.title,
+        description: post.description,
+        openGraph: {
+            title: post.title,
+            description: post.description,
+            type: 'article',
+            url: `${WEBSITE_HOST_URL}${post.url}`,
+            images: [
+                {
+                    url: `${WEBSITE_HOST_URL}${post.cover || '/images/og.png'}`,
+                    width: 1200,
+                    height: 630,
+                    alt: post.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.description,
+            images: [`${WEBSITE_HOST_URL}${post.cover || '/images/og.png'}`],
+        },
+    }
+}
+
+export default async function PostPage({ params }: PostProps) {
+    const post = await getPostFromParams(params)
+
+    if (!post) {
+        notFound()
+    }
+
+    // 获取相关文章
     const categoryPosts = allPosts
-        .filter(post => post.category === currentPost.category && post._id !== currentPost._id)
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
-    return { categoryPosts }
-}
-
-// 获取推荐文章
-const getRecommendedPosts = (currentPost: any, categoryPosts: any[]) => {
-    // 如果同类文章不足4篇，则补充最新文章
-    if (categoryPosts.length < 4) {
-        const latestPosts = allPosts
-            .filter(post => post._id !== currentPost._id && post.category !== currentPost.category)
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            .slice(0, 4 - categoryPosts.length)
-
-        return [...categoryPosts, ...latestPosts].slice(0, 4)
-    }
-
-    return categoryPosts.slice(0, 4)
-}
-
-export const generateStaticParams = async () =>
-    allPosts.map((post) => ({
-        slug: post.url.replace('/posts/', '').split('/')
-    }))
-
-function stripMarkdownLinks(text: string): string {
-    // 匹配 Markdown 链接语法 [text](url)
-    return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-}
-
-function extractHeadings(content: string) {
-    const headingRegex = /^#{2,4}\s+(.+)$/gm
-    const headings: { level: number; text: string }[] = []
-    let match
-
-    while ((match = headingRegex.exec(content)) !== null) {
-        const text = stripMarkdownLinks(match[1])
-        const level = match[0].split('#').length - 1
-        headings.push({ level, text })
-    }
-
-    return headings
-}
-
-export default function PostPage({ params }: PostProps) {
-    const post = allPosts.find((post) => {
-        const urlPath = post.url.replace('/posts/', '')
-        return urlPath === params.slug.join('/')
-    })
-
-    if (!post) notFound()
-
-    const Content = getMDXComponent(post.body.code)
-    const readingTime = calculateReadingTime(post.body.raw)
-    const { categoryPosts } = getAdjacentPosts(post)
-    const recommendedPosts = getRecommendedPosts(post, categoryPosts)
-    const headings = extractHeadings(post.body.raw)
+        .filter((p) => p.category === post.category && p.url !== post.url)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4)
 
     return (
-        <div className="relative w-full min-h-screen">
-            <ReadingProgress />
-            <Container size="default">
-                <div className="py-10 lg:py-12">
-                    <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,_1fr)_240px] gap-10">
-                        {/* 中间内容区 */}
-                        <main className="min-w-0">
-                            <div className="max-w-3xl">
-                                <article>
-                                    <PostHeader
-                                        title={post.title}
-                                        date={post.date}
-                                        readingTime={readingTime}
-                                        category={post.category}
-                                    />
-                                    <div className="prose prose-lg dark:prose-invert max-w-none">
-                                        <PostContent>
-                                            <Content />
-                                        </PostContent>
-                                    </div>
-                                </article>
-
-                                <div className="mt-16">
-                                    <PostFooter
-                                        tags={post.tags}
-                                        recommendedPosts={recommendedPosts}
-                                        category={post.category}
-                                        categoryPostsCount={categoryPosts.length}
-                                    />
-                                </div>
-                            </div>
-                        </main>
-
-                        {/* 右侧目录 */}
-                        <aside className="hidden xl:block">
-                            <div className="sticky top-24">
-                                <TableOfContents headings={headings} />
-                            </div>
-                        </aside>
-                    </div>
+        <Container>
+            <article className="mx-auto max-w-3xl py-8">
+                <PostHeader
+                    title={post.title}
+                    date={post.date}
+                    readingTime={calculateReadingTime(post.body.raw)}
+                    category={post.category}
+                />
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <MDXContent code={post.body.code} />
                 </div>
-            </Container>
-        </div>
+                <PostFooter
+                    tags={post.tags}
+                    recommendedPosts={categoryPosts}
+                    category={post.category}
+                    categoryPostsCount={allPosts.filter((p) => p.category === post.category).length}
+                />
+            </article>
+        </Container>
     )
 }
