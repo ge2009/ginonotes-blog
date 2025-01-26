@@ -36,3 +36,6 @@ next-env.d.ts
 
 # contentlayer
 .contentlayer
+
+# posts 模板
+posts/blank.mdx

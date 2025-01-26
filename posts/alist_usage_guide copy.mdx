@@ -1,0 +1,80 @@
+---
+title: Alist 网盘聚合工具使用分享
+description: 分享 Alist 的安装配置、使用场景和实际体验，包括图床搭建、视频观看和网盘互传等功能
+date: 2024-07-10
+category: tools
+tags: alist, webdav, cloud-storage, file-sharing, tools
+cover: /covers/cover2.jpeg
+---
+
+# Alist 使用分享
+
+## 安装
+
+详细的安装文档可以参考[官网](https://alist.nn.ci/)。基本上以二进制方式进行部署也就完成了：
+
+```bash
+# 安装
+curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s install
+
+# 访问地址：http://YOUR_IP:5244/
+
+# 配置文件路径：/opt/alist/data/config.json
+cd /opt/alist
+# 随机设置新密码:
+./alist admin random
+# 或者手动设置新密码:
+./alist admin set abcdasdf
+
+# 查看状态：systemctl status alist
+# 启动服务：systemctl start alist
+# 重启服务：systemctl restart alist
+# 停止服务：systemctl stop alist
+
+# 开放5244端口，然后就可以进行 webdav 的访问了
+```
+
+## 使用配置
+
+我这边配置了以下网盘：
+- 移动云盘
+- 阿里云盘 open
+- 百度网盘
+- PikPak
+
+全程只要按照官方的文档进行配置也就可以了，还是挺方便的。
+
+## 使用场景
+
+1. **图床功能**
+   - 将 139 盘用成图床，配合 PicList 实现简单上传
+   - 替换了原来的 PicGo，不再需要 lsky.pro 中转
+
+2. **视频观看**
+   - 通过 VidHub 实现直接视频观看
+   - 无限速，体验很好（这也是我购买 VidHub Pro 版本的原因）
+
+3. **文件分享**
+   - 可以分享百度网盘里的链接
+   - 他人可以用 SVIP 速度下载分享的文档
+
+4. **设备支持**
+   - Apple Vision Pro 可以用 Moon Player 播放 webdav 内容
+
+5. **其他功能**
+   - 网盘间相互复制拷贝
+   - 支持离线下载（尚未使用）
+
+## 目前遇到的问题
+
+1. 服务稳定性
+   - 遇到过一次 Alist 502 卡死
+   - 重启后恢复正常，原因未知
+
+2. PicList 稳定性
+   - 经常出现无法上传的情况
+   - 需要重启 PicList 才能恢复
+
+## 总结
+
+Alist 是一个非常实用的工具，能够很好地整合各类网盘资源，提供统一的访问接口。尽管还存在一些小问题，但整体使用体验很好。 
