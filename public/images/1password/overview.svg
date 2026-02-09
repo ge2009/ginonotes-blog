@@ -1,0 +1,49 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="1Password key benefits overview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4f8ff"/>
+      <stop offset="100%" stop-color="#e9f0ff"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 42px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+      .card { fill: #ffffff; stroke: #dbeafe; stroke-width: 2; }
+      .card-title { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d4ed8; }
+      .card-text { font: 500 19px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <text x="600" y="90" text-anchor="middle" class="title">Why 1Password Works Well</text>
+  <text x="600" y="130" text-anchor="middle" class="subtitle">Security + speed + clean daily workflow</text>
+
+  <rect x="90" y="180" width="320" height="190" rx="22" class="card"/>
+  <text x="250" y="235" text-anchor="middle" class="card-title">Strong Passwords</text>
+  <text x="250" y="275" text-anchor="middle" class="card-text">Auto-generate unique passwords</text>
+  <text x="250" y="307" text-anchor="middle" class="card-text">No reuse across websites</text>
+
+  <rect x="440" y="180" width="320" height="190" rx="22" class="card"/>
+  <text x="600" y="235" text-anchor="middle" class="card-title">Auto Fill</text>
+  <text x="600" y="275" text-anchor="middle" class="card-text">Fast login and form filling</text>
+  <text x="600" y="307" text-anchor="middle" class="card-text">Less typing, fewer mistakes</text>
+
+  <rect x="790" y="180" width="320" height="190" rx="22" class="card"/>
+  <text x="950" y="235" text-anchor="middle" class="card-title">Cross Platform</text>
+  <text x="950" y="275" text-anchor="middle" class="card-text">Desktop + mobile + browser</text>
+  <text x="950" y="307" text-anchor="middle" class="card-text">One setup, all devices</text>
+
+  <rect x="90" y="410" width="320" height="190" rx="22" class="card"/>
+  <text x="250" y="465" text-anchor="middle" class="card-title">Security Alerts</text>
+  <text x="250" y="505" text-anchor="middle" class="card-text">Find weak or leaked passwords</text>
+  <text x="250" y="537" text-anchor="middle" class="card-text">Fix risks with clear actions</text>
+
+  <rect x="440" y="410" width="320" height="190" rx="22" class="card"/>
+  <text x="600" y="465" text-anchor="middle" class="card-title">Passkeys + 2FA</text>
+  <text x="600" y="505" text-anchor="middle" class="card-text">Modern login methods</text>
+  <text x="600" y="537" text-anchor="middle" class="card-text">Better security with less friction</text>
+
+  <rect x="790" y="410" width="320" height="190" rx="22" class="card"/>
+  <text x="950" y="465" text-anchor="middle" class="card-title">Vault Sharing</text>
+  <text x="950" y="505" text-anchor="middle" class="card-text">Share only what is needed</text>
+  <text x="950" y="537" text-anchor="middle" class="card-text">Useful for family and teams</text>
+</svg>

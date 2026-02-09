@@ -1,0 +1,45 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="1Password daily usage workflow">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1f2937; }
+      .node { fill: #ffffff; stroke: #fdba74; stroke-width: 2; }
+      .n-title { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #9a3412; }
+      .n-text { font: 500 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
+      .arrow { stroke: #ea580c; stroke-width: 4; fill: none; marker-end: url(#arrowHead2); }
+    </style>
+    <marker id="arrowHead2" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#ea580c"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="680" fill="url(#bg3)"/>
+  <text x="600" y="84" text-anchor="middle" class="title">Daily Workflow with 1Password</text>
+
+  <rect x="80" y="210" width="220" height="220" rx="20" class="node"/>
+  <text x="190" y="270" text-anchor="middle" class="n-title">1. Save</text>
+  <text x="190" y="310" text-anchor="middle" class="n-text">Create account</text>
+  <text x="190" y="340" text-anchor="middle" class="n-text">Save item once</text>
+
+  <rect x="350" y="210" width="220" height="220" rx="20" class="node"/>
+  <text x="460" y="270" text-anchor="middle" class="n-title">2. Fill</text>
+  <text x="460" y="310" text-anchor="middle" class="n-text">Auto-login</text>
+  <text x="460" y="340" text-anchor="middle" class="n-text">Auto-form entry</text>
+
+  <rect x="620" y="210" width="220" height="220" rx="20" class="node"/>
+  <text x="730" y="270" text-anchor="middle" class="n-title">3. Sync</text>
+  <text x="730" y="310" text-anchor="middle" class="n-text">Desktop to mobile</text>
+  <text x="730" y="340" text-anchor="middle" class="n-text">Ready everywhere</text>
+
+  <rect x="890" y="210" width="220" height="220" rx="20" class="node"/>
+  <text x="1000" y="270" text-anchor="middle" class="n-title">4. Review</text>
+  <text x="1000" y="310" text-anchor="middle" class="n-text">Check alerts</text>
+  <text x="1000" y="340" text-anchor="middle" class="n-text">Fix weak entries</text>
+
+  <path d="M300 320 L350 320" class="arrow"/>
+  <path d="M570 320 L620 320" class="arrow"/>
+  <path d="M840 320 L890 320" class="arrow"/>
+</svg>
