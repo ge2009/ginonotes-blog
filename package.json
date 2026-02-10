@@ -14,7 +14,7 @@
     "@types/react": "^18.2.52",
     "@types/react-dom": "^18.2.18",
     "@types/rss": "^0.0.32",
-    "@vercel/analytics": "^1.2.2",
+    "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^1.1.0",
     "autoprefixer": "^10.4.17",
     "class-variance-authority": "^0.7.0",

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from '@/app/providers'
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 import { Navigation } from '@/components/navigation/Navigation'
