@@ -1,0 +1,69 @@
+---
+title: AI 时代的博客更新：在 CodeX 里写文，提交后自动部署到 Vercel
+description: 记录我现在的博客更新方式：在 CodeX 里完成写作与封面生成，提交代码后自动发布到 Vercel。
+date: 2026-02-10
+category: build
+tags: codex, ai, blog, vercel, workflow, automation
+cover: /covers/generated/codex-ai-blog-update-workflow.svg
+---
+
+以前更新博客，常常要在多个工具里来回切换：写作、找图、改格式、发布、检查部署。  
+现在这套流程已经被我简化成了一条线：
+
+1. 在 `CodeX` 里直接写文章（`posts/*.mdx`）
+2. 同时生成或更新封面图（`public/covers/generated/*.svg`）
+3. 补充正文配图（`public/images/...`）
+4. `git commit` + `git push`
+5. Vercel 自动构建并发布
+
+整个过程几分钟就能完成，成本非常低。
+
+## 现在我的更新方式
+
+### 1）文章写作：直接在仓库里完成
+
+文章本体就是 `MDX` 文件，结构清晰，内容和版本管理天然绑定。  
+标题、摘要、章节、列表都可以直接在 CodeX 里完成，不再额外复制粘贴。
+
+### 2）封面生成：一文一图
+
+现在封面也是仓库内资源，不再依赖手工重复找图。  
+每篇文章都可以生成独立封面，并在 frontmatter 里引用：
+
+```yaml
+cover: /covers/generated/xxx.svg
+```
+
+这样一来，文章风格统一、封面不重复，也方便后续批量优化。
+
+### 3）发布部署：提交即上线
+
+仓库和 Vercel 连通后，主分支提交会自动触发部署。  
+也就是说我只需要专注内容本身，发布动作几乎是“自动完成”的。
+
+## 一次完整更新的最小动作
+
+```bash
+git add .
+git commit -m "update: 新增文章与封面"
+git push origin main
+```
+
+接下来就是等 Vercel 构建完成。
+
+## 部署结果
+
+下面是部署列表的示意图（后续我会继续补充更多真实截图）：
+
+![Vercel Deployments](/images/workflow/vercel-deployments-demo.svg)
+
+## 为什么说 AI 时代更新博客更轻松
+
+- 写作不再卡在“起稿难”，可以先出结构再润色
+- 配图和封面可以程序化生成，省去重复劳动
+- 内容、资源、部署全在一个仓库内闭环
+- 发布可追踪、可回滚、可复用
+
+结论很简单：  
+**AI 不是替你写博客，而是把你从低价值的重复操作里解放出来。**
+

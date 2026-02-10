@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1600" height="960" viewBox="0 0 1600 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vercel 部署列表示意图">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <style>
+      .h1{font:700 52px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0f172a}
+      .sub{font:500 28px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#475569}
+      .row{fill:#ffffff;stroke:#e2e8f0;stroke-width:1.5}
+      .ready{fill:#10b981}
+      .error{fill:#ef4444}
+      .t1{font:600 28px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#0f172a}
+      .t2{font:500 24px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#64748b}
+      .commit{font:500 24px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#334155}
+    </style>
+  </defs>
+
+  <rect width="1600" height="960" fill="url(#bg)"/>
+
+  <text x="88" y="110" class="h1">Deployments</text>
+  <text x="88" y="158" class="sub">Automatically created for pushes to ge2009/ginonotes-blog</text>
+
+  <rect x="56" y="210" width="1488" height="130" rx="14" class="row"/>
+  <circle cx="118" cy="275" r="10" class="ready"/>
+  <text x="150" y="284" class="t1">Ready · main</text>
+  <text x="150" y="322" class="commit">adacaaa 更新文章封面</text>
+  <text x="1310" y="284" class="t2">2m ago</text>
+
+  <rect x="56" y="356" width="1488" height="130" rx="14" class="row"/>
+  <circle cx="118" cy="421" r="10" class="ready"/>
+  <text x="150" y="430" class="t1">Ready · main</text>
+  <text x="150" y="468" class="commit">f5905c3 fix: sync pnpm lockfile</text>
+  <text x="1310" y="430" class="t2">8m ago</text>
+
+  <rect x="56" y="502" width="1488" height="130" rx="14" class="row"/>
+  <circle cx="118" cy="567" r="10" class="error"/>
+  <text x="150" y="576" class="t1">Error · main</text>
+  <text x="150" y="614" class="commit">48d93a4 增加 analyze 功能</text>
+  <text x="1310" y="576" class="t2">12m ago</text>
+
+  <rect x="56" y="648" width="1488" height="130" rx="14" class="row"/>
+  <circle cx="118" cy="713" r="10" class="ready"/>
+  <text x="150" y="722" class="t1">Ready · main</text>
+  <text x="150" y="760" class="commit">041e4d4 更新博客系统</text>
+  <text x="1310" y="722" class="t2">18m ago</text>
+
+  <text x="88" y="890" class="sub">示意图：提交后自动触发构建与部署</text>
+</svg>
+
