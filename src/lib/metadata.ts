@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { WEBSITE_HOST_URL } from './constants'
+import { WEBSITE_HOST_URL, WEBSITE_TWITTER } from './constants'
 
 const meta = {
   title: '87年的脚本',
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
       }
     ],
     card: 'summary_large_image',
-    creator: '@hongming731',
+    creator: WEBSITE_TWITTER,
   },
   alternates: {
     canonical: WEBSITE_HOST_URL,
