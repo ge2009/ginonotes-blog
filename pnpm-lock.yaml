@@ -24,7 +24,7 @@ importers:
         specifier: ^0.0.32
         version: 0.0.32
       '@vercel/analytics':
-        specifier: ^1.2.2
+        specifier: ^1.6.1
         version: 1.6.1(next@14.2.35)(react@18.2.0)
       '@vercel/speed-insights':
         specifier: ^1.1.0
