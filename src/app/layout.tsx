@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { ThemeProvider } from '@/app/providers'
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -102,10 +103,19 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
+    const selineToken = process.env.NEXT_PUBLIC_SELINE_TOKEN
+
     return (
         <html lang={WEBSITE_LANGUAGE} suppressHydrationWarning>
             <head>
                 <meta name="theme-color" content="#ffffff" />
+                {selineToken ? (
+                    <Script
+                        src="https://cdn.seline.com/seline.js"
+                        data-token={selineToken}
+                        strategy="afterInteractive"
+                    />
+                ) : null}
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
