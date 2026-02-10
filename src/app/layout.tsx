@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 import { Navigation } from '@/components/navigation/Navigation'
+import { PostHogProvider } from '@/components/analytics/PostHogProvider'
 import { jsonLd } from '@/lib/metadata'
 import './global.css'
 import {
@@ -128,18 +129,20 @@ export default function RootLayout({
                 />
             </head>
             <body>
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                    <div className="relative min-h-screen">
-                        <Navigation />
-                        <div className="transition-all lg:ml-64">
-                            <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-                                <ErrorBoundary>
-                                    {children}
-                                </ErrorBoundary>
-                            </main>
+                <PostHogProvider>
+                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                        <div className="relative min-h-screen">
+                            <Navigation />
+                            <div className="transition-all lg:ml-64">
+                                <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+                                    <ErrorBoundary>
+                                        {children}
+                                    </ErrorBoundary>
+                                </main>
+                            </div>
                         </div>
-                    </div>
-                </ThemeProvider>
+                    </ThemeProvider>
+                </PostHogProvider>
                 <Analytics />
                 <SpeedInsights />
             </body>
