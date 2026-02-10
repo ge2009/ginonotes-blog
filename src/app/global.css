@@ -156,6 +156,15 @@
   @apply relative;
 }
 
+/* rehype-pretty-code 双主题输出时，仅显示当前主题对应的代码块 */
+html:not(.dark) [data-rehype-pretty-code-fragment] pre[data-theme='dark'] {
+  display: none;
+}
+
+html.dark [data-rehype-pretty-code-fragment] pre[data-theme='light'] {
+  display: none;
+}
+
 [data-rehype-pretty-code-fragment] code {
   @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0 text-sm text-black dark:text-white;
   counter-reset: line;
