@@ -36,8 +36,8 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
   )
 
   return (
-    <Container size="lg">
-      <div className="py-12 sm:py-16 lg:py-20">
+    <Container>
+      <div className="py-10 sm:py-12 lg:py-16">
         <CategoryPageContent
           category={params.category}
           posts={paginatedPosts}

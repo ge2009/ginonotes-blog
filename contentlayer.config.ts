@@ -17,6 +17,7 @@ export const Post = defineDocumentType(() => ({
     tags: { type: 'string' },
     cover: { type: 'string' },
     slug: { type: 'string' },
+    featured: { type: 'boolean' },
   },
   computedFields: {
     url: {
@@ -44,7 +45,11 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       [rehypePrettyCode, {
-        theme: 'github-dark',
+        theme: {
+          dark: 'github-dark',
+          light: 'github-light',
+        },
+        keepBackground: false,
         onVisitLine(node: any) {
           if (node.children.length === 0) {
             node.children = [{ type: 'text', value: ' ' }]

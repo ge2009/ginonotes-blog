@@ -96,7 +96,7 @@ const contacts = [
 
 export default function About() {
     return (
-        <Container size="md">
+        <Container size="lg">
             <div className="py-12 sm:py-16 lg:py-20">
                 {/* 头部介绍 */}
                 <div>

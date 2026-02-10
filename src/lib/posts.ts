@@ -5,7 +5,13 @@ import { compareDesc } from 'date-fns'
  * 获取按日期排序的文章列表
  */
 export function getSortedPosts(posts: Post[]) {
-  return posts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+  return posts.sort((a, b) => {
+    const dateComparison = compareDesc(new Date(a.date), new Date(b.date))
+    if (dateComparison === 0) {
+      return a.title.localeCompare(b.title, 'zh-CN')
+    }
+    return dateComparison
+  })
 }
 
 /**
@@ -22,6 +28,11 @@ export function getCategoryStats(posts: Post[]) {
  * 获取最新的特色文章
  */
 export function getFeaturedPost(posts: Post[]) {
+  const featuredPosts = getSortedPosts(posts.filter((post) => post.featured))
+  if (featuredPosts.length > 0) {
+    return featuredPosts[0]
+  }
+
   return getSortedPosts(posts)[0]
 }
 
@@ -29,7 +40,7 @@ export function getFeaturedPost(posts: Post[]) {
  * 获取最近的 N 篇文章（不包含特色文章）
  */
 export function getRecentPosts(posts: Post[], count: number = 10) {
-  const sortedPosts = getSortedPosts(posts)
-  // 排除第一篇特色文章
-  return sortedPosts.slice(1, count + 1)
-} 
+  const featuredPost = getFeaturedPost(posts)
+  const recentPosts = getSortedPosts(posts.filter((post) => post._id !== featuredPost._id))
+  return recentPosts.slice(0, count)
+}

@@ -7,91 +7,127 @@ import { Container } from '@/components/common/Container'
 import { PostHeader } from '@/components/post/PostHeader'
 import { PostFooter } from '@/components/post/PostFooter'
 import { calculateReadingTime } from '@/lib/utils'
+import { ReadingProgress } from '@/components/post/ReadingProgress'
+import { TableOfContents } from '@/components/post/TableOfContents'
+import { PostContent } from '@/components/post/PostContent'
 
 interface PostProps {
-    params: {
-        slug: string[]
-    }
+  params: {
+    slug: string[]
+  }
 }
 
 async function getPostFromParams(params: PostProps['params']) {
-    const slug = params?.slug?.join('/')
-    const post = allPosts.find((post) => post.url === `/posts/${slug}`)
+  const slug = params?.slug?.join('/')
+  return allPosts.find((post) => post.url === `/posts/${slug}`)
+}
 
-    if (!post) {
-        null
-    }
+function stripMarkdownLinks(text: string): string {
+  return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+}
 
-    return post
+function extractHeadings(content: string) {
+  const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '')
+  const headingRegex = /^#{2,4}\s+(.+)$/gm
+  const headings: { level: number; text: string }[] = []
+  let match: RegExpExecArray | null
+
+  while ((match = headingRegex.exec(contentWithoutCodeBlocks)) !== null) {
+    const text = stripMarkdownLinks(match[1])
+    const level = match[0].split('#').length - 1
+    headings.push({ level, text })
+  }
+
+  return headings
 }
 
 export async function generateMetadata({
-    params,
+  params,
 }: PostProps): Promise<Metadata | undefined> {
-    const post = await getPostFromParams(params)
+  const post = await getPostFromParams(params)
 
-    if (!post) {
-        return
-    }
+  if (!post) {
+    return
+  }
 
-    return {
-        title: post.title,
-        description: post.description,
-        openGraph: {
-            title: post.title,
-            description: post.description,
-            type: 'article',
-            url: `${WEBSITE_HOST_URL}${post.url}`,
-            images: [
-                {
-                    url: `${WEBSITE_HOST_URL}${post.cover || '/images/og.png'}`,
-                    width: 1200,
-                    height: 630,
-                    alt: post.title,
-                },
-            ],
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: 'article',
+      url: `${WEBSITE_HOST_URL}${post.url}`,
+      images: [
+        {
+          url: `${WEBSITE_HOST_URL}${post.cover || '/images/og.png'}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
         },
-        twitter: {
-            card: 'summary_large_image',
-            title: post.title,
-            description: post.description,
-            images: [`${WEBSITE_HOST_URL}${post.cover || '/images/og.png'}`],
-        },
-    }
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [`${WEBSITE_HOST_URL}${post.cover || '/images/og.png'}`],
+    },
+  }
 }
 
 export default async function PostPage({ params }: PostProps) {
-    const post = await getPostFromParams(params)
+  const post = await getPostFromParams(params)
 
-    if (!post) {
-        notFound()
-    }
+  if (!post) {
+    notFound()
+  }
 
-    // 获取相关文章
-    const categoryPosts = allPosts
-        .filter((p) => p.category === post.category && p.url !== post.url)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 4)
+  const sameCategoryPosts = allPosts
+    .filter((p) => p.category === post.category && p.url !== post.url)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-    return (
-        <Container>
-            <article className="mx-auto max-w-3xl py-8">
+  const recommendedPosts = sameCategoryPosts.slice(0, 4)
+  const headings = extractHeadings(post.body.raw)
+
+  return (
+    <div className="relative w-full min-h-screen">
+      <ReadingProgress />
+      <Container size="2xl">
+        <div className="py-8 sm:py-10 lg:py-12">
+          <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,_1fr)_280px] xl:gap-12">
+            <main className="min-w-0 max-w-3xl">
+              <article>
                 <PostHeader
-                    title={post.title}
-                    date={post.date}
-                    readingTime={calculateReadingTime(post.body.raw)}
-                    category={post.category}
+                  title={post.title}
+                  date={post.date}
+                  readingTime={calculateReadingTime(post.body.raw)}
+                  category={post.category}
                 />
                 <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <PostContent>
                     <MDXContent code={post.body.code} />
+                  </PostContent>
                 </div>
+              </article>
+              <div className="mt-12">
                 <PostFooter
-                    tags={post.tags}
-                    recommendedPosts={categoryPosts}
-                    category={post.category}
-                    categoryPostsCount={allPosts.filter((p) => p.category === post.category).length}
+                  tags={post.tags}
+                  recommendedPosts={recommendedPosts}
+                  category={post.category}
+                  categoryPostsCount={sameCategoryPosts.length + 1}
                 />
-            </article>
-        </Container>
-    )
+              </div>
+            </main>
+
+            <aside className="hidden xl:block">
+              <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto py-4">
+                <TableOfContents headings={headings} />
+              </div>
+            </aside>
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
 }
