@@ -45,11 +45,8 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       [rehypePrettyCode, {
-        theme: {
-          dark: 'github-dark',
-          light: 'github-light',
-        },
-        keepBackground: false,
+        theme: 'github-light',
+        keepBackground: true,
         onVisitLine(node: any) {
           if (node.children.length === 0) {
             node.children = [{ type: 'text', value: ' ' }]

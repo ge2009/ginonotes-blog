@@ -133,7 +133,7 @@
 }
 
 .prose pre {
-  @apply border border-neutral-800 rounded-lg overflow-x-auto;
+  @apply border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-x-auto;
 }
 
 .prose code {
@@ -154,15 +154,6 @@
 
 [data-rehype-pretty-code-fragment] {
   @apply relative;
-}
-
-/* rehype-pretty-code 双主题输出时，仅显示当前主题对应的代码块 */
-html:not(.dark) [data-rehype-pretty-code-fragment] pre[data-theme='dark'] {
-  display: none;
-}
-
-html.dark [data-rehype-pretty-code-fragment] pre[data-theme='light'] {
-  display: none;
 }
 
 [data-rehype-pretty-code-fragment] code {
