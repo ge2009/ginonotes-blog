@@ -1,29 +1,53 @@
 ---
-title: 测试发布：通过 OpenClaw 自动创建并推送博客
-description: 这是一篇用于验证自动发布流程的测试文章，包含写作、提交与推送全链路。
+title: 博客自动发布测试：从写作到推送的一次完整验证
+description: 基于现有仓库结构完成一篇测试文章，包含封面图、正文结构、本地构建验证与 Git 推送。
 date: 2026-02-11
 category: build
-tags: test, openclaw, blog, workflow
+tags: blog, workflow, openclaw, test, vercel
+cover: /covers/generated/test-blog-publish-by-openclaw-2026-02-11.svg
 slug: test-blog-publish-by-openclaw-2026-02-11
 ---
 
-这是一篇测试文章，用来验证当前博客仓库的发布流程是否正常。
+这篇是用于验证博客发布链路的测试文章，目标是保证「内容可读、页面不报错、提交后可自动部署」。
 
-## 本次验证目标
+## 本次测试目标
 
-- 在仓库中新增一篇 `posts/*.mdx` 文章
-- 通过本地构建确保内容可被正常解析
-- 将变更提交到 Git 并推送到远程仓库
+1. 新增一篇符合仓库规范的 `MDX` 文章
+2. 自动配置封面图并在 frontmatter 中引用
+3. 本地构建通过（确保线上不会因格式问题报错）
+4. 提交并推送到远程仓库
 
-## 验证结果说明
+## 与旧版测试内容相比，本次改进
 
-如果你能在线上站点看到这篇文章，说明整条发布链路已经打通：
+- 增加了 `cover` 字段，避免部分主题在无封面时渲染异常
+- 标题、摘要、正文结构都按现有文章风格统一
+- 保留固定 slug，便于回归测试和复现
 
-1. 内容创建成功
-2. 代码提交成功
-3. 远程推送成功
-4. 平台自动部署成功（如已连接 Vercel）
+## 当前发布流程（实操版）
+
+```bash
+# 1) 新增文章和图片资源
+# posts/*.mdx
+# public/covers/generated/*.svg
+
+# 2) 本地检查
+pnpm build
+
+# 3) 提交与推送
+git add .
+git commit -m "test: verify blog publishing workflow"
+git push origin main
+```
+
+## 结果判定标准
+
+如果线上可以正常打开这篇文章，且封面图显示正常，说明以下环节均已通过：
+
+- 内容层（MDX）✅
+- 资源层（封面图）✅
+- 构建层（Next.js/Contentlayer）✅
+- 发布层（Git Push + 自动部署）✅
 
 ---
 
-> 备注：这是测试内容，后续可删除或改成正式文章。
+> 备注：该文用于流程验证，后续可改为正式复盘文章或删除。
