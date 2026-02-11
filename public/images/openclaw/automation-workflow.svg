@@ -1,0 +1,44 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OpenClaw 自动化工作流图">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <text x="60" y="78" fill="#0F172A" font-size="42" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">OpenClaw 实战自动化工作流</text>
+  <text x="60" y="118" fill="#475569" font-size="22" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">从消息触发到执行反馈，再到记忆沉淀</text>
+
+  <g transform="translate(70,190)">
+    <rect x="0" y="0" width="220" height="110" rx="16" fill="#14B8A6"/>
+    <text x="24" y="48" fill="#F0FDFA" font-size="28" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">用户指令</text>
+    <text x="24" y="82" fill="#CCFBF1" font-size="20" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">WhatsApp / 口令</text>
+
+    <rect x="300" y="0" width="220" height="110" rx="16" fill="#2563EB"/>
+    <text x="324" y="48" fill="#EFF6FF" font-size="28" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">任务路由</text>
+    <text x="324" y="82" fill="#DBEAFE" font-size="20" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">规则 / 群角色</text>
+
+    <rect x="600" y="0" width="220" height="110" rx="16" fill="#7C3AED"/>
+    <text x="624" y="48" fill="#F5F3FF" font-size="28" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">执行动作</text>
+    <text x="624" y="82" fill="#EDE9FE" font-size="20" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">网页 / Git / Flomo</text>
+
+    <rect x="900" y="0" width="220" height="110" rx="16" fill="#F59E0B"/>
+    <text x="924" y="48" fill="#FFFBEB" font-size="28" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">结果反馈</text>
+    <text x="924" y="82" fill="#FEF3C7" font-size="20" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">成功 / 失败告警</text>
+
+    <line x1="220" y1="55" x2="300" y2="55" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+    <line x1="520" y1="55" x2="600" y2="55" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+    <line x1="820" y1="55" x2="900" y2="55" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+  </g>
+
+  <g transform="translate(120,410)">
+    <rect x="0" y="0" width="960" height="220" rx="20" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="36" y="56" fill="#0F172A" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">今日典型任务</text>
+    <text x="36" y="102" fill="#334155" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">• 自动签到（站点 A / 站点 B）</text>
+    <text x="36" y="142" fill="#334155" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">• 企业微信日报汇总（含未提交提醒）</text>
+    <text x="36" y="182" fill="#334155" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">• 博客写作 + 配图 + 提交发布</text>
+  </g>
+</svg>

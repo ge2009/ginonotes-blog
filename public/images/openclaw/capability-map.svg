@@ -1,0 +1,41 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OpenClaw 能力地图">
+  <rect width="1200" height="900" fill="#0F172A"/>
+  <text x="70" y="90" fill="#E2E8F0" font-size="46" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">OpenClaw 能力地图（实战）</text>
+  <text x="70" y="132" fill="#94A3B8" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">聊天 + 自动化 + 运维 + 内容生产 + 记录归档</text>
+
+  <g transform="translate(70,190)">
+    <rect x="0" y="0" width="320" height="180" rx="18" fill="#0EA5A5"/>
+    <text x="24" y="52" fill="#ECFEFF" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">沟通层</text>
+    <text x="24" y="98" fill="#CCFBF1" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">WhatsApp 多场景对话</text>
+    <text x="24" y="136" fill="#CCFBF1" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">按群角色输出</text>
+
+    <rect x="370" y="0" width="320" height="180" rx="18" fill="#2563EB"/>
+    <text x="394" y="52" fill="#EFF6FF" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">自动化层</text>
+    <text x="394" y="98" fill="#DBEAFE" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">网页定时执行</text>
+    <text x="394" y="136" fill="#DBEAFE" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">失败自动告警</text>
+
+    <rect x="740" y="0" width="320" height="180" rx="18" fill="#7C3AED"/>
+    <text x="764" y="52" fill="#F5F3FF" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">数据层</text>
+    <text x="764" y="98" fill="#EDE9FE" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">日报汇总提炼</text>
+    <text x="764" y="136" fill="#EDE9FE" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">未提交提醒</text>
+  </g>
+
+  <g transform="translate(70,420)">
+    <rect x="0" y="0" width="320" height="180" rx="18" fill="#F59E0B"/>
+    <text x="24" y="52" fill="#FFFBEB" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">内容层</text>
+    <text x="24" y="98" fill="#FEF3C7" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">博客写作发布</text>
+    <text x="24" y="136" fill="#FEF3C7" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">PicList 自动插图</text>
+
+    <rect x="370" y="0" width="320" height="180" rx="18" fill="#DC2626"/>
+    <text x="394" y="52" fill="#FEF2F2" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">运维层</text>
+    <text x="394" y="98" fill="#FECACA" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">口令触发重启</text>
+    <text x="394" y="136" fill="#FECACA" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">本机进程管理</text>
+
+    <rect x="740" y="0" width="320" height="180" rx="18" fill="#059669"/>
+    <text x="764" y="52" fill="#ECFDF5" font-size="30" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">记忆层</text>
+    <text x="764" y="98" fill="#A7F3D0" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Flomo 快速记录</text>
+    <text x="764" y="136" fill="#A7F3D0" font-size="24" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">标签归档追踪</text>
+  </g>
+
+  <text x="70" y="820" fill="#94A3B8" font-size="22" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">实践关键词：可执行、可追踪、可复用、可扩展</text>
+</svg>
