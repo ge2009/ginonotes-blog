@@ -1,0 +1,29 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1020"/>
+      <stop offset="1" stop-color="#162B4D"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="220" y1="190" x2="1280" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4FD1C5"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <circle cx="1290" cy="180" r="180" fill="#1D4ED8" fill-opacity="0.18"/>
+  <circle cx="1370" cy="720" r="220" fill="#14B8A6" fill-opacity="0.14"/>
+  <rect x="120" y="120" width="1360" height="660" rx="28" fill="#0F172A" fill-opacity="0.55" stroke="rgba(255,255,255,0.12)"/>
+  <text x="180" y="250" fill="#7DD3FC" font-family="Inter, PingFang SC, Microsoft YaHei, sans-serif" font-size="42" font-weight="700">Windows · TCP · netsh</text>
+  <text x="180" y="360" fill="white" font-family="Inter, PingFang SC, Microsoft YaHei, sans-serif" font-size="76" font-weight="800">动态端口耗尽</text>
+  <text x="180" y="455" fill="white" font-family="Inter, PingFang SC, Microsoft YaHei, sans-serif" font-size="76" font-weight="800">如何定位并修复</text>
+  <text x="180" y="560" fill="#CBD5E1" font-family="Inter, PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="500">从浏览器报错到 netsh 调整端口范围的一次实战排查</text>
+  <rect x="180" y="628" width="420" height="74" rx="16" fill="url(#accent)" fill-opacity="0.18" stroke="#67E8F9" stroke-opacity="0.5"/>
+  <text x="218" y="675" fill="#E0F2FE" font-family="JetBrains Mono, Menlo, monospace" font-size="28" font-weight="700">start=10000  num=55535</text>
+  <g opacity="0.9">
+    <rect x="1080" y="270" width="250" height="240" rx="22" fill="#111827" stroke="#334155"/>
+    <text x="1120" y="330" fill="#93C5FD" font-family="JetBrains Mono, Menlo, monospace" font-size="28">49152</text>
+    <text x="1120" y="380" fill="#64748B" font-family="Inter, sans-serif" font-size="22">默认起始端口</text>
+    <text x="1120" y="455" fill="#5EEAD4" font-family="JetBrains Mono, Menlo, monospace" font-size="28">16384</text>
+    <text x="1120" y="505" fill="#64748B" font-family="Inter, sans-serif" font-size="22">默认端口数量</text>
+  </g>
+</svg>
